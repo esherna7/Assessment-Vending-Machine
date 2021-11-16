@@ -14,5 +14,12 @@ public interface VendingMachineDao {
     VendingMachineProduct getSelectedProduct(int selection);
 
     void subtractProduct(VendingMachineProduct productToSubtract) throws ClassVendingMachineDaoException, ClassVendingMachinePersistenceException;
-            
+
+    ArrayList<VendingMachineProduct> loadProduct() throws ClassVendingMachineDaoException;
+
+    VendingMachineProduct unmarshallProduct(String vendingMachineProduct);
+
+    String marshallProduct(VendingMachineProduct product);
+
+    void writeProduct() throws ClassVendingMachineDaoException;
 }

@@ -5,11 +5,15 @@
  */
 package com.esai.vendingmachine.service;
 
+import com.esai.vendingmachine.dao.ClassVendingMachineAuditDao;
+import com.esai.vendingmachine.dao.ClassVendingMachineAuditDaoFileImpl;
+import com.esai.vendingmachine.dao.VendingMachineDao;
+import com.esai.vendingmachine.dao.VendingMachineDaoFileImpl;
 import com.esai.vendingmachine.dto.VendingMachineProduct;
+import java.io.FileWriter;
 import java.math.BigDecimal;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -19,34 +23,55 @@ import org.junit.jupiter.api.Test;
 public class VendingMachineServiceLayerImplTest {
 
     VendingMachineServiceLayer service;
+    VendingMachineDao testDao;
+    ClassVendingMachineAuditDao testAuditDao;
 
     public VendingMachineServiceLayerImplTest() {
-        service = new VendingMachineServiceLayerImpl();
-    }
-
-    @BeforeEach
-    public void setUp() throws Exception {
-        VendingMachineProduct testClone = new VendingMachineProduct();
-        testClone.setProductName("Almonds");
-        testClone.setProductPrice("2.00");
-        testClone.setInventoryCount(3);
-        service.getProductList().add(testClone);
     }
 
     @Test
-    public void testCalculatePurchase() throws Exception {
-        int productSelection = 1;
-        BigDecimal userMoney = new BigDecimal(".50");
+    public void testGetProductList() throws Exception {
+        // Assign service
+        String testFile = "vendingmachinetest.txt";
+        new FileWriter(testFile, true);
+        testDao = new VendingMachineDaoFileImpl(testFile);
+        testAuditDao = new ClassVendingMachineAuditDaoFileImpl();
+        service = new VendingMachineServiceLayerImpl(testDao, testAuditDao);
+
         VendingMachineProduct testClone = new VendingMachineProduct();
         testClone.setProductName("Almonds");
         testClone.setProductPrice("2.00");
         testClone.setInventoryCount(4);
-        service.getProductList().add(testClone);
+
+        assertEquals(2, service.getProductList().size(), "Should have 2 product");
+    }
+
+    @Test
+    public void testCalculatePurchase() throws Exception {
+        // Assign service
+        String testFile = "vendingmachinetest.txt";
+        new FileWriter(testFile, true);
+        testDao = new VendingMachineDaoFileImpl(testFile);
+        testAuditDao = new ClassVendingMachineAuditDaoFileImpl();
+        service = new VendingMachineServiceLayerImpl(testDao, testAuditDao);
+
+        // Create sample test
+        int productSelection = 1;
+        BigDecimal userMoney = new BigDecimal(".50");
+        
+        // Create test clone
+        VendingMachineProduct testClone = new VendingMachineProduct();
+        testClone.setProductName("Almonds");
+        testClone.setProductPrice("2.00");
+        testClone.setInventoryCount(4);
+
+        service.getProductList();
+
         try {
-            service.calculatePurchase(userMoney, productSelection);
+            service.calculatePurchase(userMoney, productSelection); //user money is not enough funds
         } catch (NoItemInventoryException e) {
             fail("Incorrect exception was thrown");
-        } catch (InsufficientFundsException e){
+        } catch (InsufficientFundsException e) {
             return;
         }
     }

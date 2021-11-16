@@ -13,13 +13,23 @@ import java.io.*;
 public class VendingMachineDaoFileImpl implements VendingMachineDao {
 
     // holds vendingmachine.txt
-    public static final String VENDING_MACHINE = "vendingmachine.txt";
+    public final String VENDING_MACHINE;
     // Delimiter
     public static final String DELIMITER = "::";
     // list of vending machine products
     ArrayList<VendingMachineProduct> productList = new ArrayList<VendingMachineProduct>();
     // allows access to write audit
     private ClassVendingMachineAuditDao auditDao = new ClassVendingMachineAuditDaoFileImpl();
+    
+    // Constructor assigning to VendingMachine.txt
+    public VendingMachineDaoFileImpl(){
+        VENDING_MACHINE = "vendingmachine.txt";
+    }
+    
+    // constructor assigning to vendingmachinetest.txt
+    public VendingMachineDaoFileImpl(String testFile){
+        VENDING_MACHINE = testFile;
+    }
     
     // return productList inventory in arraylist
     @Override
@@ -52,6 +62,7 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
         }
     }
 
+    @Override
     // translate object in file to a vending machine item object
     // splits on delimiter ::
     public VendingMachineProduct unmarshallProduct(String vendingMachineProduct) {
@@ -68,8 +79,9 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
         return productFromFile;
     }
 
+    @Override
     // reads VendingMachineProducts into memory
-    private void loadProduct() throws ClassVendingMachineDaoException {
+    public ArrayList<VendingMachineProduct> loadProduct() throws ClassVendingMachineDaoException {
         Scanner scanner;
 
         // try catch block to throw error if file not found
@@ -90,10 +102,12 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
         }
         //close scanner
         scanner.close();
+        return productList;
     }
 
+    @Override
     // transform Product information in memory to line of text to be written
-    private String marshallProduct(VendingMachineProduct product) {
+    public String marshallProduct(VendingMachineProduct product) {
         String productText = product.getProductName() + DELIMITER;
         productText += product.getPrice() + DELIMITER;
         productText += product.getInventoryCount();
@@ -101,8 +115,9 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao {
         return productText;
     }
 
+    @Override
     // write current arraylist of products to VENDING_MACHINE file
-    private void writeProduct() throws ClassVendingMachineDaoException {
+    public void writeProduct() throws ClassVendingMachineDaoException {
         PrintWriter out;
 
         // try catch block throws error if file isnt found

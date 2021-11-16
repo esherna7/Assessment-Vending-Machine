@@ -11,10 +11,15 @@ import java.util.ArrayList;
 public class VendingMachineView {
 
     // handles print messages
-    private UserIO io = new UserIOConsoleImpl();
+    private UserIO io;
     // handles product list index
     private static int productIndex;
 
+    // constructor assign io
+    public VendingMachineView(UserIO io){
+        this.io = io;
+    }
+    
     // prints vending machine banner
     public void printMenuBanner() {
         io.print("Vending Machine");

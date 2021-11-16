@@ -1,5 +1,6 @@
 package com.esai.vendingmachine.service;
 
+import com.esai.vendingmachine.dao.ClassVendingMachineAuditDao;
 import com.esai.vendingmachine.dao.ClassVendingMachineDaoException;
 import com.esai.vendingmachine.dao.ClassVendingMachinePersistenceException;
 import com.esai.vendingmachine.dao.VendingMachineDao;
@@ -16,8 +17,15 @@ import java.util.*;
 public class VendingMachineServiceLayerImpl implements VendingMachineServiceLayer {
 
     // allow access to doa
-    private VendingMachineDao dao = new VendingMachineDaoFileImpl();
+    private VendingMachineDao dao;
+    // allow access to auditDao
+    private ClassVendingMachineAuditDao auditDao;
 
+    // constructor assigning dao and auditdao
+    public VendingMachineServiceLayerImpl(VendingMachineDao dao, ClassVendingMachineAuditDao auditDao){
+        this.dao = dao;
+        this.auditDao = auditDao;
+    }
     // access dao to return arraylist of products in vending machine
     @Override
     public ArrayList<VendingMachineProduct> getProductList() throws ClassVendingMachineDaoException {

@@ -17,10 +17,16 @@ import java.math.BigDecimal;
 public class VendingMachineController {
 
     // handles ui and user interaction
-    private VendingMachineView view = new VendingMachineView();
+    private VendingMachineView view;
     // handles change and purchases and can access doa
-    private VendingMachineServiceLayer service = new VendingMachineServiceLayerImpl();
+    private VendingMachineServiceLayer service;
 
+    // constructor assigning view and service
+    public VendingMachineController(VendingMachineView view, VendingMachineServiceLayer service){
+        this.view = view;
+        this.service = service;
+    }
+    
     // holds user money input
     BigDecimal userMoney = new BigDecimal("0.00");
 
