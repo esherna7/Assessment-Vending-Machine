@@ -28,7 +28,8 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
     @Override
     public Change calculatePurchase(BigDecimal userMoney, int productSelection) throws InsufficientFundsException, NoItemInventoryException, ClassVendingMachineDaoException, ClassVendingMachinePersistenceException {
         // call dao to get selected product info from txt file
-        VendingMachineProduct selectedProduct = dao.getSelectedProduct(productSelection);
+        VendingMachineProduct selectedProduct;
+        selectedProduct = dao.getSelectedProduct(productSelection);
         // throw exception if not enough inventory
         if (selectedProduct.getInventoryCount() == 0) {
             throw new NoItemInventoryException("Product not available in inventory");

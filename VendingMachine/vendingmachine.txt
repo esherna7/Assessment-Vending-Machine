@@ -1,6 +1,6 @@
-Twix Bar::1.50::2
+Twix Bar::1.50::-36
 M&M's::1.00::5
-KitKat::1.75::2
+KitKat::1.75::1
 Crunch::1.75::1
 Five Gum::1.00::6
 Nerds::2.00::5
